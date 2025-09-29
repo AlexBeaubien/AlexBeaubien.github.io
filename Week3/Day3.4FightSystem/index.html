@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fight System</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+ <h1 id="turnHeading">Player turn: 1</h1>
+
+  <div class="div_1">
+    <p>Player 1</p>
+    <p>Health</p>
+    <p id="health1">100</p>
+    <div><p class="p_fight" id="fight1">Fight</p></div>
+  </div>
+
+  <div class="div_2">
+    <p>Player 2</p>
+    <p>Health</p>
+    <p id="health2">100</p>
+    <div><p class="p_fight" id="fight2">Fight</p></div>
+  </div>
+
+  <script>
+    let turn = 1;
+    let health1 = 100;
+    let health2 = 100;
+
+    const turnHeading = document.getElementById('turnHeading');
+    const health1Display = document.getElementById('health1');
+    const health2Display = document.getElementById('health2');
+
+    const fight1 = document.getElementById('fight1');
+    const fight2 = document.getElementById('fight2');
+
+    function updateTurnDisplay() {
+      turnHeading.textContent = `Player turn: ${turn}`;
+    }
+
+    function updateHealthDisplays() {
+      health1Display.textContent = health1;
+      health2Display.textContent = health2;
+    }
+
+    function endGame(winner) {
+      alert(`${winner} wins!`);
+      // Reset the game
+      health1 = 100;
+      health2 = 100;
+      turn = 1;
+      updateHealthDisplays();
+      updateTurnDisplay();
+    }
+
+    function attack(attacker) {
+      if (turn !== attacker) {
+        alert("It's not your turn!");
+        return;
+      }
+
+      const damage = Math.floor(Math.random() * 10) + 1;
+
+      if (attacker === 1) {
+        health2 = Math.max(health2 - damage, 0);
+        updateHealthDisplays();
+
+        if (health2 === 0) {
+          endGame('Player 1');
+          return;
+        }
+      } else {
+        health1 = Math.max(health1 - damage, 0);
+        updateHealthDisplays();
+
+        if (health1 === 0) {
+          endGame('Player 2');
+          return;
+        }
+      }
+
+      turn = turn === 1 ? 2 : 1;
+      updateTurnDisplay();
+    }
+
+    fight1.addEventListener('click', () => attack(1));
+    fight2.addEventListener('click', () => attack(2));
+
+    // Initial display update
+    updateHealthDisplays();
+    updateTurnDisplay();
+  </script>
+</body>
+</html>

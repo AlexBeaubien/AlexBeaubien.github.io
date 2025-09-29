@@ -1,0 +1,29 @@
+label{
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    display: block;
+    font-size: large;
+    margin-top: 3px;
+    margin-right: 50px;
+    float: left;
+}
+input {
+    display: block;
+    font-size: large;
+    border: 0px;
+}
+button{
+    padding: 10px;
+    color: white;
+    font-size: large;
+    background-color: black;
+    border-radius: 50px 50px 50px 50px;
+    transition: transform 0.3s ease;
+}
+h1{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+button:hover{
+    transform: rotate(1deg);
+}

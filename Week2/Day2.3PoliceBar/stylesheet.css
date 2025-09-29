@@ -1,0 +1,18 @@
+.div_1 {
+    display: inline-block;
+    width:180px;
+    border:155px solid rgb(238, 8, 8);
+    margin:20px;
+}
+.div_1:hover {
+    transform: translate(-150%, 0);
+}
+.div_2 {
+    display: inline-block;
+    width:180px;
+    border:155px solid rgb(8, 196, 238);
+    margin:20px;
+}
+.div_2:hover {
+    transform: translate(-250%, 0);
+}
