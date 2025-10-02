@@ -1,0 +1,25 @@
+body{background-color: bisque;}
+h1{
+    color: yellow;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black,  -1px 1px 0 black,  1px 1px 0 black;
+}
+label{
+    color: yellow;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black,  -1px 1px 0 black,  1px 1px 0 black;
+}
+button{
+    background-color: rgb(255, 0, 0);
+    color: rgb(0, 0, 0);
+    text-shadow: -1px -1px 0 rgb(255, 255, 255), 1px -1px 0 rgb(255, 255, 255),  -1px 1px 0 rgb(255, 255, 255),  1px 1px 0 rgb(255, 255, 255);
+}
+p{
+    color: yellow;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black,  -1px 1px 0 black,  1px 1px 0 black;
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ticket Purchase</title>
+  <link rel = stylesheet href = "index.css">
+</head>
+<body>
+  <h1>Tickets For Being Able To Say "hello"</h1>
+  <label for="age">Age:</label>
+  <input type="number" id="age" min="0" max="999" placeholder="Age" />
+  <br><br>
+  <label>Gender:</label>
+  <input type="radio" id="male" name="gender" value="male" />
+  <label for="male">Male</label>
+  <input type="radio" id="female" name="gender" value="female" />
+  <label for="female">Female</label>
+  <br><br>
+  <button onclick="calculatePrice()">Buy Ticket</button>
+  <br><br>
+  <p id="output"></p>
+  <script>
+    function calculatePrice() {
+      const age = parseInt(document.getElementById('age').value);
+      const genderRadios = document.getElementsByName('gender');
+      let gender = null;
+
+      for (const radio of genderRadios) {
+        if (radio.checked) {
+          gender = radio.value;
+          break;
+        }
+      }
+
+      if (isNaN(age) || age < 0) {
+        document.getElementById('output').textContent = "Please enter a valid age.";
+        return;
+      }
+
+      if (!gender) {
+        document.getElementById('output').textContent = "Please select a gender.";
+        return;
+      }
+
+      let price = 0;
+      if (age >= 18) {
+        price = 21.00;
+      } else if (age >= 12) {
+        price = 14.00;
+      } else {
+        price = 7.00;
+      }
+      if (gender == 'female') {
+        price *= 0.75;
+      }
+
+      price = price.toFixed(2);
+      document.getElementById('output').textContent = `Your ticket price is $${price}`;
+    }
+  </script>
+</body>
+</html>
