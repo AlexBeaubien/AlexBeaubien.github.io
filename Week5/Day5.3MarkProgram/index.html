@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Mark Program</title>
+</head>
+<body>
+  <h2>Enter Your Mark (0 - 100)</h2>
+  
+  <input type="number" id="markInput" min="0" max="100" placeholder="Enter mark">
+  <button onclick="checkGrade()">Mark</button>
+  
+  <p id="result"></p>
+
+  <script>
+    function checkGrade() {
+      let mark = parseInt(document.getElementById("markInput").value);
+      let grade;
+      if (mark === 100) {
+        grade = "Perfect";
+      } else if (mark >= 90) {
+        grade = "A+";
+      } else if (mark >= 80) {
+        grade = "A";
+      } else if (mark >= 70) {
+        grade = "B";
+      } else if (mark >= 60) {
+        grade = "C";
+      } else if (mark >= 50) {
+        grade = "D";
+      } else {
+        grade = "F";
+      }
+      document.getElementById("result").textContent = "Your grade: " + grade;
+    }
+  </script>
+</body>
+</html>
