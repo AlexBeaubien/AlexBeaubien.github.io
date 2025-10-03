@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageSwitcher</title>
+</head>
+<body>
+    <h1>Alex's Car Switcher</h1>
+    <br>
+    <img id="myImage" src="imgs/Car.jpg" alt="Vehicle" style="display:block; margin-top:10px; max-width:300px;" />
+    <button id="switcher">Switch Vehicle</button>
+    <script>
+        let carImage = "imgs/Car.jpg";
+        let truckImage = "imgs/Truck.jpg";
+        let currentImage = "car";
+
+        const imgElement = document.getElementById("myImage");
+        const button = document.getElementById("switcher");
+
+        button.addEventListener("click", () => {
+            if (currentImage == "car") {
+                imgElement.src = truckImage;
+                currentImage = "truck";
+            } else {
+                imgElement.src = carImage;
+                currentImage = "car";
+            }
+        });
+    </script>
+</body>
