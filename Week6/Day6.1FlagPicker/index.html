@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G7 Members Signup</title>
+    <link rel="stylesheet" href="country.css">
+</head>
+<body>
+    <div><h1>Welcome to the G7 Meeting</h1></div>
+    <br>
+    <label for="country">Select your country:</label>
+<select id="country" name="country">
+<option value="NA"></option>
+  <option value="canada">Canada</option>
+  <option value="USA">United States</option>
+  <option value="France">France</option>
+  <option value="Germany">Germany</option>
+  <option value="Italy">Italy</option>
+  <option value="Japan">Japan</option>
+  <option value="UK">United Kingdom</option>
+</select>
+    <p id="AnswerTxt">Your Country:</p>
+    <br>
+    <img id="Answerimg">
+    <script>
+        let Canflag = "Flags/Canada.png"
+        let FFlag = "Flags/France.png"
+        let DeFlag = "Flags/Germany.png"
+        let ItFlag = "Flags/Italy.png"
+        let JFlag = "Flags/Japan.png"
+        let UKFlag = "Flags/UK.png"
+        let USFlag = "Flags/US.png"
+
+        const imgElement = document.getElementById("Answerimg");
+        const txtElement = document.getElementById("AnswerTxt");
+        const selectElement = document.getElementById("country");
+        selectElement.addEventListener("change", () => {
+            let selectedCountry = selectElement.value;
+            if (selectedCountry == "canada") {
+                imgElement.src = Canflag;
+                txtElement.innerText = "Your Country: Canada";
+            } else if (selectedCountry == "USA") {
+                imgElement.src = USFlag;
+                txtElement.innerText = "Your Country: United States";
+            } else if (selectedCountry == "France") {
+                imgElement.src = FFlag;
+                txtElement.innerText = "Your Country: France";
+            } else if (selectedCountry == "Germany") {
+                imgElement.src = DeFlag;
+                txtElement.innerText = "Your Country: Germany";
+            } else if (selectedCountry == "Italy") {
+                imgElement.src = ItFlag;
+                txtElement.innerText = "Your Country: Italy";
+            } else if (selectedCountry == "Japan") {
+                imgElement.src = JFlag;
+                txtElement.innerText = "Your Country: Japan";
+            } else if (selectedCountry == "UK") {
+                imgElement.src = UKFlag;
+                txtElement.innerText = "Your Country: United Kingdom";
+            }
+        });
+
+    </script>
+</body>
+</html>
