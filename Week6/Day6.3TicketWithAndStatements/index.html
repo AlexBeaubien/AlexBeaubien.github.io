@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Useless_Tickets.com</title>
+  <link rel = stylesheet href = "tickets.css">
+</head>
+<body>
+    <div><h1>Useless Tickets</h1></div>
+    <br>
+    <br>
+    <div class = "div1"><label for="age">Age:</label>
+  <input type="number" id="age" min="0" max="999" placeholder="Age" />
+  <br><br>
+  <label>Gender:</label>
+  <input type="radio" id="male" name="gender" value="male" />
+  <label for="male">Male</label>
+  <input type="radio" id="female" name="gender" value="female" />
+  <label for="female">Female</label>
+  <br><br>
+  <button onclick="calculatePrice()">Buy Ticket</button></div>
+  <br>
+  <br>
+  <div class = "div1"><p id="output"></p></div>
+  <script>
+    function calculatePrice() {
+      const age = parseInt(document.getElementById('age').value);
+      const genderRadios = document.getElementsByName('gender');
+      let gender = null;
+
+      for (const radio of genderRadios) {
+        if (radio.checked) {
+          gender = radio.value;
+          break;
+        }
+      }
+
+      if (isNaN(age) || age < 0) {
+        document.getElementById('output').textContent = "Please enter a valid age.";
+        return;
+      }
+
+      if (!gender) {
+        document.getElementById('output').textContent = "Please select a gender.";
+        return;
+      }
+
+      let price = 0;
+      if (age >= 18 && gender == "male") {
+        price = 21.00;
+      } else 
+      if (age >= 18 && gender == "female") {
+        price = 15.75;
+      }else 
+        if (age >= 12 && gender == "male") {
+        price = 14.00;
+      } else if (age >= 12 && gender == "female") {
+        price = 10.50;
+      } else{ if (gender == 'female') {
+        price = 5.25;
+      } else {
+        price = 7.00;
+      }
+      }
+      price = price.toFixed(2);
+      document.getElementById('output').textContent = `Your ticket price is $${price}`;
+    }
+  </script>
+</body>
+</html>

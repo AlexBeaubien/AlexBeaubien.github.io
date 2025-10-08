@@ -1,0 +1,28 @@
+div{
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(12, 201, 214);
+    border-radius: 25px;
+    width: 95%;
+    margin: auto;
+    padding: 5px;
+    box-shadow: 10px 10px 5px grey;
+}
+
+h1{
+    text-align: center;
+    color: rgb(12, 201, 214);
+    font-family: 'Arial Black', sans-serif;
+    font-size: 3em;
+    margin-top: 20px;
+}
+
+.div1{
+    float: left;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(12, 201, 214);
+    border-radius: 25px;
+    width: 50%;
+    margin: auto;
+    padding: 25px;
+    box-shadow: 1px 1px 1px grey;
+}
