@@ -3,32 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Alex's Tip Tracker</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Random Number Generator</h1>
-    <button onclick="generateNumbers()">Generate Numbers and Calculate Average</button>
-    <p id="numbers"></p>
+    <h1>Alex's Tips for the Month</h1>
+    <button onclick="generateTips()">Input Tips and Calculate Average</button>
+
+    <table id="tipTable">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Tip Amount ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
     <p id="average"></p>
 
     <script>
-        function generateNumbers() {
-            let count = 0;
-            let sum = 0;
-            let numbers = [];
-    
-            while (count < 25) {
-                let num = Math.floor(Math.random() * 16) + 1;
-                numbers.push(num);
-                sum += num;
-                count++;
-            }
+    function generateTips() {
+        const tableBody = document.querySelector("#tipTable tbody");
+        tableBody.innerHTML = "";
+        let total = 0;
+        let day = 1;
 
-            let avg = sum / 25;
-
-            document.getElementById("numbers").textContent = "Numbers generated: " + numbers.join(", ");
-            document.getElementById("average").textContent = "Average: " + avg.toFixed(2);
+        while (day <= 30) {
+            const tip = Math.floor(Math.random() * 10) + 1;
+            total += tip;
+            const row = document.createElement("tr");
+            const dayCell = document.createElement("td");
+            dayCell.textContent = `Day ${day}`;
+            const tipCell = document.createElement("td");
+            tipCell.textContent = `$${tip}`;
+            row.appendChild(dayCell);
+            row.appendChild(tipCell);
+            tableBody.appendChild(row);
+            day++;
         }
-    </script>
+        const average = total / 30;
+        document.getElementById("average").textContent = `Average Tip: $${average.toFixed(2)}`;
+    }
+</script>
 </body>
 </html>
