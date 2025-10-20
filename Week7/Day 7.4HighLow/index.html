@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Low</title>
+</head>
+<body>
+<h1>High Low Game</h1>
+<input type="number" min="0" max="100" id="answer">
+<button id="submit">Submit</button>
+<p id="output">Your answer:</p>
+<p id="numofguesses">Number of guesses:</p>
+
+<script>
+    let correctnum = Math.floor(Math.random() * 100) + 1;
+    let guesses = 0;
+    let output = document.getElementById("output");
+    let numofguesses = document.getElementById("numofguesses");
+
+document.getElementById("submit").addEventListener("click", function() {
+    let answer = document.getElementById("answer");
+    let guess = parseInt(answer.value);
+    
+    if (isNaN(guess)) {
+        output.innerHTML = "Please enter a valid number.";
+        return;
+    }
+
+    guesses += 1;
+    numofguesses.innerHTML = "Number of guesses: " + guesses;
+    
+    if (guess < correctnum) {
+        output.innerHTML = "Your answer: " + guess + " is too low";
+    } else if (guess > correctnum) {
+        output.innerHTML = "Your answer: " + guess + " is too high";
+    } else {
+        output.innerHTML = "Your answer: " + guess + " is correct!";
+    }
+});
+</script>
+</body>
+</html>
