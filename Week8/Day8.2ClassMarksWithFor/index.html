@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Marks</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<h1>Class Marks</h1>
+    <div>
+        <p>The average mark for males is: </p>
+        <br>
+        <p>The average mark for females is: </p>
+    </div>
+<script>
+    let tallyM = 0;
+    let tallyF = 0;
+    let countM = 0;
+    let countF = 0;
+
+    let gender = prompt("Please enter gender", "M or F or q to quit");
+
+    for (; gender !== "q"; ) {
+        if (gender === "M" || gender === "F") {
+            let mark = parseInt(prompt("Enter the mark:"));
+            if (gender === "M") {
+                tallyM += mark;
+                countM++;
+            } else if (gender === "F") {
+                tallyF += mark;
+                countF++;
+            }
+        }
+        gender = prompt("Please enter gender", "M or F or q to quit");
+    }
+
+    let avgM = countM > 0 ? tallyM / countM : 0;
+    let avgF = countF > 0 ? tallyF / countF : 0;
+
+        document.querySelector("p").innerText += avgM.toFixed(2);
+        document.querySelectorAll("p")[1].innerText += avgF.toFixed(2);
+</script>
+
+</body>
+</html>

@@ -4,8 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class Marks</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <h1>Class Marks</h1>
+    <div>
+        <p>The average mark for males is: </p>
+        <br>
+        <p>The average mark for females is: </p>
+    </div>
+    <script>
+        let gender = prompt("Please enter gender", "M or F or q to quit")
+        let tallyM=0;
+        let tallyF=0;
+        let mark=0;
+        let countM=0;
+        let countF=0;
+        while(gender != "q"){
+            mark = parseInt(prompt("Enter the mark:"));
+            if(gender == "M"){
+                tallyM = tallyM + mark;
+                countM++;
+        }
+            else if(gender == "F"){
+                tallyF = tallyF + mark;
+                countF++;
+            }
+           gender = prompt("Please enter gender", "M or F or q to quit")
+        }
+        gender = prompt("Please enter gender", "M or F or q to quit")
+        let avgM = tallyM / countM;
+        let avgF = tallyF / countF;
+        document.querySelector("p").innerText += avgM;
+        document.querySelectorAll("p")[1].innerText += avgF;
+    </script>
 </body>
 </html>
