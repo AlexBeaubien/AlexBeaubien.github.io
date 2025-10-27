@@ -1,0 +1,23 @@
+.p2 {
+    color: #e2e2e6;
+    font-size: 40px;
+      text-shadow:
+    -2px -2px 0 black,
+     2px -2px 0 black,
+    -2px  2px 0 black,
+     2px  2px 0 black;
+    text-align: center;
+}
+body {
+    background-image: url('imgs/tanks.jpg');
+    background-size: contain;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: #ff0000;
+    background-repeat: no-repeat;
+}
+p {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warthunder Country and Rank Picker</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <p class="p2">Warthunder Country and Rank Picker</p>
+    <br>
+    <p id="countrytext">Country:</p>
+    <p id = "ranktext">Rank:</p>
+    <button id="button">Randomize</button>
+    <script>
+        let Rank=[ "1", "2", "3", "4", "5", "6", "7", "8"]; 
+        let Nation=[ "USA", "Germany", "USSR", "Britain", "Japan", "Italy", "France", "Isreal"]; 
+
+    document.getElementById("button").onclick = function() {
+        let ChosenRank = Rank[Math.floor(Math.random() * Rank.length)];
+        let ChosenNation = Nation[Math.floor(Math.random() * Nation.length)];
+        document.getElementById("countrytext").innerHTML = "Country: " + ChosenNation;
+        document.getElementById("ranktext").innerHTML = "Rank: " + ChosenRank;
+    }
+    </script>
+</body>
+</html>
