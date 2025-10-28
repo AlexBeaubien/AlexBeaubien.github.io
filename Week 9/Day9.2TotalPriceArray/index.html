@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex's Restaurant</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class = "background">
+        <P class="payment">RBC Check Machine</P>
+    <div>
+        <p class="title">Alex's Restaurant</p>
+    </div>
+    </div>
+    <br>
+    <p>Items</p>
+    <ul>
+        <li>Burger - $12.98</li>
+        <li id="Tax0" class="Tax">With Tax</li>
+        <li>Pizza~Medium - $14.20</li>
+        <li id="Tax1" class="Tax">With Tax</li>
+        <li>Soda - $5.86</li>
+        <li id="Tax2" class="Tax">With Tax</li>
+        <li>Salad - $9.25</li>
+        <li id="Tax3" class="Tax">With Tax</li>
+        <li>Ice Cream~Double - $14.70</li>
+        <li id="Tax4" class="Tax">With Tax</li>
+    </ul>
+
+    <script>
+        let prices =[12.98,14.20,5.86,9.25,14.7];
+        let TaxedPrices = prices.map(function(price) {
+            return "$" + (price * 1.13).toFixed(2);
+        });
+        document.getElementById("Tax0").innerHTML = "With Tax: " + TaxedPrices[0];
+        document.getElementById("Tax1").innerHTML = "With Tax: " +  TaxedPrices[1];
+        document.getElementById("Tax2").innerHTML = "With Tax: " +  TaxedPrices[2];
+        document.getElementById("Tax3").innerHTML = "With Tax: " +  TaxedPrices[3];
+        document.getElementById("Tax4").innerHTML = "With Tax: " +  TaxedPrices[4];
+    </script>
+</body>
+</html>

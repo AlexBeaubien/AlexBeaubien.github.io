@@ -1,0 +1,31 @@
+div {
+    background-color: rgb(202, 198, 198);
+    padding: 10px;
+}
+.background {
+    background-color: rgb(202, 198, 198);
+    padding: 3px;
+}
+.payment {
+    color: rgb(230, 190, 13);
+    text-shadow:  
+    -1px -1px 0 rgb(2, 6, 255),
+     1px -1px 0 rgb(2, 6, 255),
+    -1px  1px 0 rgb(2, 6, 255),
+     1px  1px 0 rgb(2, 6, 255);
+    font-weight: bold;
+}
+.title {
+    color: black;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+li {
+    font-weight: bold;
+}
+.Tax {
+    font-weight: normal;
+    font-size: 15px;
+}
