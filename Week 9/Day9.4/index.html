@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        document.write("Fruit Lengths:<br>");
+        let text = "apple banana cherry";
+        let fruits = text.split(" ");
+        let size1 = fruits[0].length;
+        let size2 = fruits[1].length;
+        let size3 = fruits[2].length;
+        document.write(`The length of the word ${fruits[0]} is ${size1}<br>`);
+        document.write(`The length of the word ${fruits[1]} is ${size2}<br>`);
+        document.write(`The length of the word ${fruits[2]} is ${size3}<br>`);
+        document.write("<br>");
+        document.write("<br>");
+        document.write("Name Capitalization:<br>");
+        let names = "john, jane, jim, jack";
+        let nameList = names.split(", ");
+        for (let i = 0; i < nameList.length; i++) {
+            document.write(`Name ${i + 1}: ${nameList[i]}<br>`);
+            nameList[i] = nameList[i].charAt(0).toUpperCase() + nameList[i].slice(1);
+            document.write(`Capitalized Name ${i + 1}: ${nameList[i]}<br>`);
+        }
+    </script>
+</body>
+</html>
