@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FruitLength</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1>Fruit Lengths:</h1>
+    <p class = "apple" id="0"></p>
+    <p class = "banana" id="1"></p>
+    <p class = "cherry" id="2"></p>
+    <script>
+        let text = "apple banana cherry";
+        let fruits = text.split(" ");
+        let size1 = fruits[0].length;
+        let size2 = fruits[1].length;
+        let size3 = fruits[2].length;
+        document.getElementById("0").innerText = `The length of the word ${fruits[0]} is ${size1}`;
+        document.getElementById("1").innerText = `The length of the word ${fruits[1]} is ${size2}`;
+        document.getElementById("2").innerText = `The length of the word ${fruits[2]} is ${size3}`;
+    </script>
+</body>
+</html>

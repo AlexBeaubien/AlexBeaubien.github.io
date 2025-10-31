@@ -1,0 +1,17 @@
+h1 {
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+body {
+    background-color: #000874;
+}
+.apple {
+    color: red;
+}
+.banana {
+    color: yellow;
+}
+.cherry {
+    color: darkred;
+}
