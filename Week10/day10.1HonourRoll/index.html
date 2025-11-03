@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honour Roll Students</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="TopDiv">
+     <h1>Honour Roll Students</h1>
+     </div>
+     <br>
+    <button id="button">Get Names</button>
+     <div class="MainDiv">
+        <div id="MainDiv"></div>
+    </div>
+
+  <script>
+    let students = ["Alice", "Alex", "Steve", "Samantha", "Wang", "Bob", "Charlie", "David"];
+    let marks = [95, 99, 78, 64, 78, 86, 95, 89];
+    let honourRoll = students
+      .map((student, index) => ({ name: student, mark: marks[index] }))
+      .filter(student => student.mark >= 80);
+    let button = document.getElementById("button");
+    let div = document.getElementById("MainDiv");
+    let divcss = document.querySelector(".MainDiv");
+
+    button.addEventListener("click", () => {
+      divcss.style.display = "block";
+      let html = "<h2>Honour Roll Students</h2>";
+      html += honourRoll.map(s => `${s.name}: ${s.mark}`).join("<br>");
+      div.innerHTML = html;
+    });
+  </script>
+</body>
+</html>
