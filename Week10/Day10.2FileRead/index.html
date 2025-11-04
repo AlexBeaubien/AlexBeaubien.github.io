@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Reader</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="TopDiv">
+    <h1>Select a File to Read(.txt)</h1>
+    </div>
+    <br>
+    <input type="file" id="fileInput"><br><br>
+    <div class="MainDiv">
+    <pre id="output"></pre>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById("fileInput");
+        const output = document.getElementById("output");
+
+    fileInput.addEventListener("change", function() {
+    const file = fileInput.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+        let input = e.target.result;
+
+        output.textContent = "The variable 'input' contains:\n\n" + input;
+        let country = input.split(" ");
+         output.textContent = "Countries listed one per line:\n\n";
+        for (let i = 0; i < country.length; i++) {
+          output.textContent += country[i] + "\n";
+        }
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>
