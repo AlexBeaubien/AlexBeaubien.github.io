@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information</title>
+    <link rel="stylesheet" href="names.css">
+</head>
+<body>
+    <div class="header">
+    <h1>Student Information</h1>
+    </div>
+
+    <p>First Name:</p>
+    <input class="display" type="text" id="FirstName">
+    <p>Last Name:</p>
+    <input class="display" type="text" id="LastName">
+    <p>Age:</p>
+    <input class="display" type="text" id="Age">
+    <p>Email:</p>
+    <input class="display" type="text" id="Email">
+    <br>
+    <button id="add">Add Student</button>
+    <button id="display">Display Students</button>
+    <br><br>
+    <div id="studentList"></div>
+
+    <script>
+        // Initial array of studeents
+        let students = [
+     { firstName: "James", lastName: "Wright", email: "jameswright@pvnccdsb.on.ca", age: 61 },
+     { firstName: "Ava", lastName: "Smith", email: "avasmith@pvnccdsb.on.ca", age: 17 },
+     { firstName: "Liam", lastName: "Brown", email: "liambrown@pvnccdsb.on.ca", age: 18 },
+     { firstName: "Noah", lastName: "Johnson", email: "noahjohnson@pvnccdsb.on.ca", age: 17 }
+    ];
+
+
+    // Add new student
+    document.getElementById("add").onclick = function() {
+        let firstName = document.getElementById("FirstName").value;
+        let lastName = document.getElementById("LastName").value;
+        let age = parseInt(document.getElementById("Age").value);
+        let email = document.getElementById("Email").value;
+
+        let newStudent = {
+            firstName: firstName,
+            lastName: lastName,
+            age: age,
+            email: email
+        };
+
+        students.push(newStudent);
+
+        document.getElementById("FirstName").value = "";
+        document.getElementById("LastName").value = "";
+        document.getElementById("Age").value = "";
+        document.getElementById("Email").value = "";
+    };
+
+
+    // Display students
+    document.getElementById("display").onclick = function() {
+        let displaynames = document.getElementById("studentList");
+        displaynames.innerHTML = "";
+        for (let i = 0; i < students.length; i++) {
+            displaynames.innerHTML += students[i].firstName + " " + students[i].lastName + " (" + students[i].age + ") - " + students[i].email + "<br>";
+        }
+    }
+    </script>
+</body>
+</html>
