@@ -1,0 +1,92 @@
+body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin-top: 150px;
+      background-color: #f2f2f2;
+    }
+
+.MainDiv {
+  padding: 45px;
+  background-color: #333333;
+  border-right: 9px solid #222222;
+  border-bottom: 18px solid #292929;
+  width: 420px;
+  margin: 0 auto;
+  border-radius: 80px 80px 80px 80px;
+}
+
+.display {
+  width: 330px;
+  height: 50px;
+  font-size: 20px;
+  background-color: black;
+}
+    /* Base button style */
+ #b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #equal, #Add, #Subtract, #Multiply, #Divide, #decimal {
+  background: linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
+  border: none;
+  color: white;
+  padding: 18px 40px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition:
+    background 0.3s ease,
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+  box-shadow: 0 6px #000000;
+  margin: 5px;
+}
+#Clear, #onoff {
+  background: linear-gradient(180deg, #ff9900 0%, #d88200 100%);
+  border: none;
+  color: white;
+  padding: 18px 40px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition:
+    background 0.3s ease,
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+  box-shadow: 0 6px #945902;
+  margin: 5px;
+}
+
+    /* Hover effect */
+#b0.hovered, #b1.hovered, #b2.hovered, #b3.hovered, #b4.hovered,
+#b5.hovered, #b6.hovered, #b7.hovered, #b8.hovered, #b9.hovered, #equal.hovered,
+#Add.hovered, #Subtract.hovered, #Multiply.hovered, #Divide.hovered, #decimal.hovered {
+  background: linear-gradient(180deg, #505050 0%, #303030 100%);
+  box-shadow: 0 8px #000000;
+}
+#onoff.hovered, #Clear.hovered {
+  background: linear-gradient(180deg, #ffad33 0%, #ff9b05 100%);
+  box-shadow: 0 8px #cf7c00;
+}
+
+/* Pressed effect */
+#b0.pressed, #b1.pressed, #b2.pressed, #b3.pressed, #b4.pressed,
+#b5.pressed, #b6.pressed, #b7.pressed, #b8.pressed, #b9.pressed, #equal.pressed,
+#Add.pressed, #Subtract.pressed, #Multiply.pressed, #Divide.pressed, #decimal.pressed {
+  transform: translateY(4px);
+  box-shadow: 0 3px #000000;
+  background: linear-gradient(180deg, #505050 0%, #303030 100%);
+    }
+
+#onoff.pressed, #Clear.pressed {
+  transform: translateY(4px);
+  background: linear-gradient(180deg, #ffad33 0%, #ff9b05 100%);
+  box-shadow: 0 3px #cf7c00;
+}
+
+    /* Flash animation for click */
+    @keyframes flash {
+      0% { background: linear-gradient(180deg, #292929 0%, #1f1f1f 100%); }
+      50% { background: linear-gradient(180deg, #1d1d1d 0%, #333333 100%); }
+      100% { background: linear-gradient(180deg, #1f1f1f 0%, rgb(27, 27, 27) 100%); }
+    }
+
+    #myButton.flash {
+      animation: flash 0.3s ease;
+    }

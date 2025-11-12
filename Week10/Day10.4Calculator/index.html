@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex's Simple Calculator</title>
+  <link rel="stylesheet" href="calc.css">
+</head>
+<body>
+<div class="MainDiv">
+  <div>
+  <input class="display" type="text" id="calcDisplay">
+</div><br>
+<div>
+  <button id="onoff">On/Off</button>
+  <button id="Clear">CE</button>
+</div><br>
+<div>
+  <button id="b7">7</button>
+  <button id="b8">8</button>
+  <button id="b9">9</button>
+  <button id="Multiply">x</button>
+</div><br>
+<div>
+  <button id="b4">4</button>
+  <button id="b5">5</button>
+  <button id="b6">6</button>
+  <button id="Divide">÷</button>
+</div>
+<div><br>
+  <button id="b1">1</button>
+  <button id="b2">2</button>
+  <button id="b3">3</button>
+  <button id="Subtract">-</button>
+</div>
+<div><br>
+  <button id="b0">0</button>
+  <button id="decimal">.</button>
+  <button id="Add">+</button>
+  <button id="equal">=</button>
+</div>
+</div>
+
+  <!-- Sound effects -->
+  <audio id="clickSound" src="Sound/ButtonPress.mp3"></audio>
+  <audio id="start" src="Sound/Start.mp3"></audio>
+
+<script>
+  let Zero = document.getElementById("b0");
+  let One = document.getElementById("b1");
+  let Two = document.getElementById("b2");
+  let Three = document.getElementById("b3");
+  let Four = document.getElementById("b4");
+  let Five = document.getElementById("b5");
+  let Six = document.getElementById("b6");
+  let Seven = document.getElementById("b7");
+  let Eight = document.getElementById("b8");
+  let Nine = document.getElementById("b9");
+  let Divide = document.getElementById("Divide");
+  let Multiply = document.getElementById("Multiply");
+  let Subtract = document.getElementById("Subtract");
+  let Add = document.getElementById("Add");
+  let Decimal = document.getElementById("decimal");
+  let Equal = document.getElementById("equal");
+  let Display = document.getElementById("calcDisplay");
+  let OnOff = document.getElementById("onoff");
+  let Clear = document.getElementById("Clear");
+
+  Zero.addEventListener("click", () => ButtonPress("0"));
+  One.addEventListener("click", () => ButtonPress("1"));
+  Two.addEventListener("click", () => ButtonPress("2"));
+  Three.addEventListener("click", () => ButtonPress("3"));
+  Four.addEventListener("click", () => ButtonPress("4"));
+  Five.addEventListener("click", () => ButtonPress("5"));
+  Six.addEventListener("click", () => ButtonPress("6"));
+  Seven.addEventListener("click", () => ButtonPress("7"));
+  Eight.addEventListener("click", () => ButtonPress("8"));
+  Nine.addEventListener("click", () => ButtonPress("9"));
+  Add.addEventListener("click", () => ButtonPress("+"));
+  Subtract.addEventListener("click", () => ButtonPress("-"));
+  Multiply.addEventListener("click", () => ButtonPress("x"));
+  Decimal.addEventListener("click", () => ButtonPress("."));
+  Divide.addEventListener("click", () => ButtonPress("÷"));
+  Equal.addEventListener("click", calculate);
+  Clear.addEventListener("click", clear);
+  OnOff.addEventListener("click", onoff);
+const startS = document.getElementById("start");
+  let on = false;
+  function onoff() {
+    on = !on;
+    if (on) {
+      Display.value = "";
+      Display.disabled = false;
+      document.getElementById("calcDisplay").style.backgroundColor = "#556635";
+      startS.currentTime = 1;
+      startS.play();
+    } else {
+      startS.pause();
+      Display.value = "";
+      Display.disabled = true;
+      document.getElementById("calcDisplay").style.backgroundColor = "black";
+      document.getElementById("calcDisplay").style.color = "black";
+    }
+  }
+  startS.addEventListener("timeupdate", function stopSound() {
+  if (startS.currentTime >= 7) {
+    startS.pause();
+    startS.currentTime = 0;
+    startS.removeEventListener("timeupdate", stopSound);
+  }
+  });
+  function ButtonPress(value) {
+    Display.value += value;
+  }
+  function clear(value) {
+    Display.value = "";
+  }
+
+  function calculate() {
+    try {
+      let expression = Display.value.replace(/x/g, '*').replace(/÷/g, '/');
+      Display.value = eval(expression);
+    } catch (error) {
+      Display.value = "Error";
+    }
+  }
+
+  // CSS Script
+  const buttons = document.querySelectorAll(' #b0, #b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #equal, #Add, #Subtract, #Multiply, #Divide, #decimal, #onoff, #Clear');
+  const clickSound = document.getElementById("clickSound");
+  buttons.forEach(button => {
+    // Mouse over
+    button.addEventListener("mouseover", () => {
+      button.classList.add("hovered");
+    });
+    // Mouse out
+    button.addEventListener("mouseout", () => {
+      button.classList.remove("hovered");
+    });
+    // Mouse down (pressed)
+    button.addEventListener("mousedown", () => {
+      button.classList.add("pressed");
+      clickSound.currentTime = 0.2;
+      clickSound.play();
+    });
+    // Mouse up (release)
+    button.addEventListener("mouseup", () => {
+      button.classList.remove("pressed");
+      button.classList.add("flash");
+      setTimeout(() => button.classList.remove("flash"), 300);
+    });
+  });
+</script>
+</body>
+</html>
