@@ -39,6 +39,14 @@ p {
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+.fileinput {
+    width: 250px;
+    padding: 10px;
+    border: 1px solid #b0c4de;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
 .display:focus {
     border-color: #2a4d8f;
     box-shadow: 0 0 5px rgba(42, 77, 143, 0.5);

@@ -21,18 +21,55 @@
     <input class="display" type="text" id="Email">
     <br>
     <button id="add">Add Student</button>
+    <input class = "fileinput" type="file" id="fileInput"><br><br>
     <button id="display">Display Students</button>
+    <button id="export">Export txt File</button>
     <br><br>
     <div id="studentList"></div>
 
     <script>
         // Initial array of studeents
         let students = [
-     { firstName: "James", lastName: "Wright", email: "jameswright@pvnccdsb.on.ca", age: 61 },
-     { firstName: "Ava", lastName: "Smith", email: "avasmith@pvnccdsb.on.ca", age: 17 },
-     { firstName: "Liam", lastName: "Brown", email: "liambrown@pvnccdsb.on.ca", age: 18 },
-     { firstName: "Noah", lastName: "Johnson", email: "noahjohnson@pvnccdsb.on.ca", age: 17 }
+    
     ];
+
+    // Import txt file
+    const fileInput = document.getElementById("fileInput");
+    fileInput.addEventListener("change", function() {
+        const file = fileInput.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            let input = e.target.result;
+            let lines = input.split("\n");
+            for (let i = 0; i < lines.length; i++) {
+                let parts = lines[i].split(",");
+                if (parts.length === 4) {
+                    let student = {
+                        firstName: parts[0].trim(),
+                        lastName: parts[1].trim(),
+                        age: parseInt(parts[2].trim()),
+                        email: parts[3].trim()
+                    };
+                    students.push(student);
+                }
+            }
+        };
+        reader.readAsText(file);
+    });
+
+    // Export txt file
+    document.getElementById("export").onclick = function() {
+        let output = "";
+        for (let i = 0; i < students.length; i++) {
+            output += students[i].firstName + "," + students[i].lastName + "," + students[i].age + "," + students[i].email + "\n";
+        }
+        let blob = new Blob([output], { type: "text/plain" });
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "students.txt";
+        link.click();
+    };
 
 
     // Add new student
