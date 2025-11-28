@@ -52,7 +52,7 @@ input::placeholder {
 .SQLinput{
     color: #ffffff;
     background-color: #ff0000;
-    width: 350px;
+    width: 600px;
     padding: 5px;
     margin: 5px;
     border: 1px solid #6b0000;
@@ -79,6 +79,7 @@ button:hover{
 .ResultsBox {
     width: 90%;
     border: 2px solid black;
+    background-color: rgb(70, 70, 70);
     padding: 10px;
     margin: 15px auto;
     display: flex;

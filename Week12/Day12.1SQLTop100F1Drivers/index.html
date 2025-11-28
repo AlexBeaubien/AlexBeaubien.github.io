@@ -6,31 +6,291 @@
     <title>100 F1 Drivers</title>
     <link rel="stylesheet" href="SQL.css">
 </head>
+<!DOCTYPE html>
+<html>
 <body>
-    <div class="heading">
-        <img src="imgs/F1LogoWhite.png" alt="F1 Logo" class="F1LogoWhite">
-        <h1>100 F1 Drivers</h1>
-    </div>
-    <br>
-    <h2>Add Your Own Driver:</h2>
-    <input type="text" id="ID" placeholder="ID">
-    <input type="text" id="Name" placeholder="Name">
-    <input type="text" id="Last_Name" placeholder="Last Name">
-    <input type="text" id="Career_Points" placeholder="Career Points">
-    <input type="text" id="Career_Wins" placeholder="Career Wins">
-    <input type="text" id="Career_Championships" placeholder="Championship Wins">
-    <input type="text" id="First_Team" placeholder="First Team">
-    <input type="text" id="Last_Team" placeholder="Last Team">
-    <input type="text" id="Still_Racing" placeholder="Actively Racing?">
-    <button id="AddDriver">Add Driver</button>
-    <br>
-    <br>
-    <h2>Driver Database:</h2>
-    <input type="text" id="SQL_Search" placeholder="Input SQL Query" class="SQLinput">
-    <br>
-    <button class="RunSQL" id="RunSQL">Run Query</button>
-    <div class="ResultsBox">
-        <p class="Results" id="Results"></p>
-    </div>
+<div class="heading">
+    <img src="imgs/F1LogoWhite.png" alt="F1 Logo" class="F1LogoWhite">
+    <h1>100 F1 Drivers</h1>
+</div>
+<br>
+
+<h2>Add Your Own Driver:</h2>
+<input type="text" id="ID" placeholder="ID">
+<input type="text" id="Name" placeholder="Name">
+<input type="text" id="Last_Name" placeholder="Last Name">
+<input type="text" id="Career_Points" placeholder="Career Points">
+<input type="text" id="Career_Wins" placeholder="Career Wins">
+<input type="text" id="Career_Championships" placeholder="Championship Wins">
+<input type="text" id="First_Team" placeholder="First Team">
+<input type="text" id="Last_Team" placeholder="Last Team">
+<input type="text" id="Still_Racing" placeholder="Actively Racing?">
+<button id="AddDriver">Add Driver</button>
+
+<br><br>
+
+<h2>Driver Database:</h2>
+<button id="clearDB">Clear Database</button>
+<button id="importCSV">Import File</button>
+<button id="exportCSV">Export File</button>
+<br>
+
+<input type="text" id="SQL_Search" placeholder="Input SQL Query" class="SQLinput">
+<br>
+<button class="RunSQL" id="RunSQL">Run Query</button>
+
+<div class="ResultsBox">
+    <p class="Results" id="Results"></p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
+
+<script>
+
+let db;
+
+initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/${file}` })
+.then(SQL => {
+    db = new SQL.Database();
+    createTable();
+    loadInitialDrivers();
+});
+
+
+function createTable() {
+    db.run(`
+        CREATE TABLE IF NOT EXISTS drivers (
+            ID INTEGER,
+            Name TEXT,
+            Last_Name TEXT,
+            Career_Points REAL,
+            Career_Wins INTEGER,
+            Career_Championships INTEGER,
+            First_Team TEXT,
+            Last_Team TEXT,
+            Still_Racing TEXT
+        );
+    `);
+}
+
+
+function loadInitialDrivers() {
+    const csv = `ID,Name,Last_Name,Career_Points,Career_Wins,Career_Championships,First_Team,Last/CurrentTeam,Still_Racing
+1,Lewis,Hamilton,5012,105,7,McLaren,Ferrari,Yes
+2,Max,Verstappen,3390,68,4,Toro Rosso,Red Bull,Yes
+3,Sebastian,Vettel,3098,53,4,Toro Rosso,Aston Martin,No
+4,Fernando,Alonso,2380,32,2,Minardi,Aston Martin,Yes
+5,Kimi,Raikkonen,1874,21,1,Sauber,Alfa Romeo,No
+6,Valtteri,Bottas,1798,10,0,Williams,Alfa Romeo,No
+7,Charles,Leclerc,1660,6,0,Sauber,Ferrari,Yes
+8,Sergio,Perez,1640,5,0,Sauber,Red Bull,Yes
+9,Nico,Rosberg,1595,23,1,Williams,Mercedes,No
+10,Michael,Schumacher,1566,91,7,Jordan,Ferrari,No
+11,Lando,Norris,1400,1,0,McLaren,McLaren,Yes
+12,Carlos,Sainz,1321,1,0,Toro Rosso,Ferrari,Yes
+13,Daniel,Ricciardo,1330,8,0,HRT,AlphaTauri,Yes
+14,Alain,Prost,799,51,4,McLaren,Williams,No
+15,Rubens,Barrichello,659,11,0,Jordan,Williams,No
+16,Nico,Hulkenberg,620,0,0,Williams,Sauber,Yes
+17,David,Coulthard,535,13,0,Williams,Red Bull,No
+18,Ralf,Schumacher,329,6,0,Jordan,Toyota,No
+19,Nelson,Piquet,485,23,3,Ensign,Benetton,No
+20,Nigel,Mansell,482,31,1,Lotus,Williams,No
+21,Pierre,Gasly,364,1,0,Toro Rosso,Alpine,Yes
+22,Damon,Hill,360,22,1,Brabham,Jordan,No
+23,Jackie,Stewart,359,27,3,BRM,Tyrrell,No
+24,Esteban,Ocon,396,1,0,Manor,Alpine,Yes
+25,George,Russell,1010,2,0,Williams,Mercedes,Yes
+26,Mark,Webber,1048,9,0,Minardi,Red Bull,No
+27,Riccardo,Patrese,281,6,0,Arrows,Benetton,No
+28,Emerson,Fittipaldi,281,14,2,Lotus,McLaren,No
+29,Juan-Manuel,Fangio,277.64,24,5,Alfa Romeo,Mercedes,No
+30,Giancarlo,Fisichella,275,3,0,Minardi,Force India,No
+31,Jim,Clark,274,25,2,Lotus,Lotus,No
+32,Robert,Kubica,274,1,0,BMW Sauber,Williams,No
+33,Lance,Stroll,268,0,0,Williams,Aston Martin,Yes
+34,Jack,Brabham,261,14,3,Cooper,Brabham,No
+35,Nick,Heidfeld,259,0,0,Sauber,Mercedes,No
+36,Jody,Scheckter,255,10,1,McLaren,Ferrari,No
+37,Denny,Hulme,248,8,1,Cooper,McLaren,No
+38,Jarno,Trulli,246.5,1,0,Minardi,Lotus,No
+39,Jean,Alesi,241,1,0,Tyrrell,Prost,No
+40,Jacques,Villeneuve,235,11,1,Williams,Sauber,No
+41,Jacques,Laffite,228,6,0,Tyrrell,Ligier,No
+42,Alexander,Albon,226,0,0,Toro Rosso,Williams,Yes
+43,Clay,Regazzoni,212,6,0,Ensign,Ferrari,No
+44,Ronnie,Peterson,206,10,0,Lotus,March,No
+45,Alan,Jones,206,12,1,Hesketh,Williams,No
+46,Daniil,Kvyat,202,1,0,Toro Rosso,Alpine,No
+47,Kevin,Magnussen,202,1,0,Renault,Haas,Yes
+48,Bruce,McLaren,196.5,4,0,Cooper,McLaren,No
+49,Eddie,Irvine,191,4,0,Jordan,Jaguar,No
+50,Stirling,Moss,186.64,16,0,ERA,Cooper,No
+51,Michele,Alboreto,186.5,5,0,Arrows,Lancia,No
+52,Jacky,Ickx,181,8,0,Cooper,Lotus,No
+53,René,Arnoux,181,7,0,Alfa Romeo,Ligier,No
+54,John,Surtees,180,6,1,Cooper,Surtees,No
+55,Mario,Andretti,180,12,1,Lotus,Tyrell,No
+56,James,Hunt,179,10,1,Hesketh,McLaren,No
+57,Heinz-Harald,Frentzen,174,3,0,Sauber,Jordan,No
+58,John,Watson,169,5,0,Brabham,McLaren,No
+59,Keke,Rosberg,159.5,5,1,Williams,Williams,No
+60,Patrick,Depailler,141,2,0,Tyrrell,Alfa Romeo,No
+61,Alberto,Ascari,140.14,13,2,Maserati,Ferrari,No
+62,Kimi,Antonelli,137,6,0,Mercedes,Mercedes,Yes
+63,Dan,Gurney,133,4,0,Connaught,Eagle,No
+64,Thierry,Boutsen,132,3,0,Arrows,Williams,No
+65,Mike,Hawthorn,127.64,3,1,Cooper,Ferrari,No
+66,Giuseppe,Farina,127.33,6,1,Alfa Romeo,Alfa Romeo,No
+67,Kamui,Kobayashi,125,1,0,Sauber,Caterham,No
+68,Adrian,Sutil,124,0,0,Spyker,Sauber,No
+69,Elio,De Angelis,122,2,0,Shadow,Lotus,No
+70,Paul,di Resta,121,0,0,Force India,Force India,No
+71,Yuki,Tsunoda,119,0,0,Scuderia AlphaTauri,AlphaTauri,No
+72,Zhou,Guanyu,96,0,0,Alfa Romeo,Sauber,Yes
+73,Jochen,Rindt,109,6,1,Cooper,Lotus,No
+74,Richie,Ginther,107,1,0,Ferrari,Honda,No
+75,Gilles,Villeneuve,107,6,0,McLaren,Ferrari,No
+76,Heikki,Kovalainen,105,1,0,Renault,Lotus,No
+77,Patrick,Tambay,103,2,0,Tyrrell,Renault,No
+78,Didier,Pironi,101,3,0,Ligier,Ferrari,No
+79,Phil,Hill,98,3,1,Ferrari,Ferrari,No
+80,Martin,Brundle,98,0,0,Tyrrell,Tyrrell,No
+81,Johnny,Herbert,98,3,0,Benetton,Jordan,No
+82,François,Cevert,89,1,0,Tyrrell,Tyrrell,No
+83,Stefan,Johansson,88,0,0,March,Onyx,No
+84,Chris,Amon,83,0,0,BRM,Matra,No
+85,Jose-Froilan,Gonzalez,77.64,3,0,Maserati,Cooper,No
+86,Olivier,Panis,76,1,0,Ligier,Prost,No
+87,Pastor,Maldonado,76,1,0,Williams,Lotus,No
+88,Tony,Brooks,75,6,0,BRM,Ferrari,No
+89,Jean-Pierre,Beltoise,77,1,0,Matra,BRM,No
+90,Timo,Glock,51,0,0,BMW Sauber,Marussia,No
+91,Jean-Eric,Vergne,51,0,0,Toro Rosso,Toro Rosso,No
+92,Vitaly,Petrov,64,0,0,Renault,Caterham,No
+93,Marcus,Ericsson,18,0,0,Caterham,Sauber,No
+94,Nyck,de Vries,2,0,0,AlphaTauri,AlphaTauri,No
+95,Nikita,Mazepin,0,0,0,Haas,Haas,No
+96,Niko,Tsukuda,15,0,0,Haas,Haas,Yes
+97,Luca,Ghiotto,12,0,0,Trident,Sauber,No
+98,Robert,Schwartzman,10,0,0,Prema,Ferrari,No
+99,Cameron,Das,8,0,0,Carlin,McLaren,No
+100,Logan,Sargeant,55,0,0,Charouz,Williams,Yes`;
+
+    insertCSV(csv);
+}
+
+function insertCSV(csv) {
+    const rows = csv.trim().split("\n");
+    const headers = rows.shift().split(",");
+
+    rows.forEach(row => {
+        const values = row.split(",").map(v => v.trim().replace(/'/g, "''"));
+
+        db.run(`
+            INSERT INTO drivers (
+                ID, Name, Last_Name, Career_Points, Career_Wins,
+                Career_Championships, First_Team, Last_Team, Still_Racing
+            ) VALUES (
+                '${values[0]}','${values[1]}','${values[2]}','${values[3]}',
+                '${values[4]}','${values[5]}','${values[6]}','${values[7]}','${values[8]}'
+            );
+        `);
+    });
+}
+
+function exportCSV() {
+    const result = db.exec("SELECT * FROM drivers");
+    if (result.length === 0) return;
+
+    const cols = result[0].columns;
+    const rows = result[0].values;
+
+    let csv = cols.join(",") + "\n";
+    rows.forEach(r => csv += r.join(",") + "\n");
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "drivers.csv";
+    a.click();
+}
+
+document.getElementById("importCSV").onclick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".csv";
+
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = evt => {
+            insertCSV(evt.target.result);
+            alert("CSV Imported into SQL Database!");
+        };
+
+        reader.readAsText(file);
+    };
+
+    input.click();
+};
+
+document.getElementById("AddDriver").onclick = () => {
+    const fields = [
+        "ID","Name","Last_Name","Career_Points","Career_Wins",
+        "Career_Championships","First_Team","Last_Team","Still_Racing"
+    ];
+
+    const vals = fields.map(id => document.getElementById(id).value.trim().replace(/'/g,"''"));
+
+    db.run(`
+        INSERT INTO drivers VALUES (
+            '${vals[0]}','${vals[1]}','${vals[2]}','${vals[3]}','${vals[4]}',
+            '${vals[5]}','${vals[6]}','${vals[7]}','${vals[8]}'
+        );
+    `);
+
+    alert("Driver Added!");
+};
+
+
+document.getElementById("clearDB").onclick = () => {
+    db.run("DELETE FROM drivers;");
+    alert("Database Cleared!");
+};
+document.getElementById("exportCSV").onclick = () => {
+    exportCSV();
+};
+document.getElementById("RunSQL").onclick = () => {
+    const query = document.getElementById("SQL_Search").value;
+
+    try {
+        const result = db.exec(query);
+
+        if (result.length === 0) {
+            document.getElementById("Results").innerText = "No results.";
+            return;
+        }
+
+        const cols = result[0].columns;
+        const rows = result[0].values;
+
+        let txt = cols.join(" | ") + "\n";
+        txt += "-".repeat(60) + "\n";
+
+        rows.forEach(r => {
+            txt += r.join(" | ") + "\n";
+        });
+
+        document.getElementById("Results").innerText = txt;
+    } catch (err) {
+        document.getElementById("Results").innerText = "Error: " + err;
+    }
+};
+</script>
+
 </body>
 </html>
