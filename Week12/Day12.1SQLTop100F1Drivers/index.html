@@ -221,7 +221,7 @@ function exportCSV() {
 document.getElementById("importCSV").onclick = () => {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".csv";
+    input.accept = ".txt,.csv";
 
     input.onchange = e => {
         const file = e.target.files[0];
