@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 F1 Drivers</title>
+    <link rel="stylesheet" href="SQL.css">
+</head>
+<body>
+    <div class="heading">
+        <img src="imgs/F1LogoWhite.png" alt="F1 Logo" class="F1LogoWhite">
+        <h1>100 F1 Drivers</h1>
+    </div>
+    <br>
+    <h2>Add Your Own Driver:</h2>
+    <input type="text" id="ID" placeholder="ID">
+    <input type="text" id="Name" placeholder="Name">
+    <input type="text" id="Last_Name" placeholder="Last Name">
+    <input type="text" id="Career_Points" placeholder="Career Points">
+    <input type="text" id="Career_Wins" placeholder="Career Wins">
+    <input type="text" id="Career_Championships" placeholder="Championship Wins">
+    <input type="text" id="First_Team" placeholder="First Team">
+    <input type="text" id="Last_Team" placeholder="Last Team">
+    <input type="text" id="Still_Racing" placeholder="Actively Racing?">
+    <button id="AddDriver">Add Driver</button>
+    <br>
+    <br>
+    <h2>Driver Database:</h2>
+    <input type="text" id="SQL_Search" placeholder="Input SQL Query" class="SQLinput">
+    <br>
+    <button class="RunSQL" id="RunSQL">Run Query</button>
+    <div class="ResultsBox">
+        <p class="Results" id="Results"></p>
+    </div>
+</body>
+</html>
