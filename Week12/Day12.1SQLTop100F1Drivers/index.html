@@ -6,13 +6,13 @@
     <title>100 F1 Drivers</title>
     <link rel="stylesheet" href="SQL.css">
 </head>
-<!DOCTYPE html>
-<html>
 <body>
+
 <div class="heading">
     <img src="imgs/F1LogoWhite.png" alt="F1 Logo" class="F1LogoWhite">
     <h1>100 F1 Drivers</h1>
 </div>
+
 <br>
 
 <h2>Add Your Own Driver:</h2>
@@ -33,7 +33,20 @@
 <button id="clearDB">Clear Database</button>
 <button id="importCSV">Import File</button>
 <button id="exportCSV">Export File</button>
-<br>
+
+<br><br>
+
+<h3>Quick SQL Buttons:</h3>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers;">Show all drivers</button>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers WHERE Still_Racing = 'Yes';">Current active drivers</button>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers ORDER BY Career_Points DESC LIMIT 10;">Top 10 by career points</button>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers WHERE Career_Championships > 0;">World champions</button>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers WHERE Career_Wins > 10;">Drivers with 10+ wins</button>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers ORDER BY Last_Name ASC;">Sort by last name</button>
+<button class="sqlBtn" data-sql="SELECT Name, First_Team FROM drivers;">List of first teams</button>
+<button class="sqlBtn" data-sql="SELECT COUNT(*) AS Total_Drivers FROM drivers;">Count all drivers</button>
+
+<br><br>
 
 <input type="text" id="SQL_Search" placeholder="Input SQL Query" class="SQLinput">
 <br>
@@ -49,7 +62,8 @@
 
 let db;
 
-initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/${file}` })
+// Initialize SQL.js
+initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/${f}` })
 .then(SQL => {
     db = new SQL.Database();
     createTable();
@@ -72,7 +86,6 @@ function createTable() {
         );
     `);
 }
-
 
 function loadInitialDrivers() {
     const csv = `ID,Name,Last_Name,Career_Points,Career_Wins,Career_Championships,First_Team,Last/CurrentTeam,Still_Racing
@@ -176,24 +189,20 @@ function loadInitialDrivers() {
 98,Robert,Schwartzman,10,0,0,Prema,Ferrari,No
 99,Cameron,Das,8,0,0,Carlin,McLaren,No
 100,Logan,Sargeant,55,0,0,Charouz,Williams,Yes`;
-
     insertCSV(csv);
 }
 
 function insertCSV(csv) {
-    const rows = csv.trim().split("\n");
-    const headers = rows.shift().split(",");
+    const lines = csv.trim().split("\n");
+    lines.shift(); // remove header
 
-    rows.forEach(row => {
-        const values = row.split(",").map(v => v.trim().replace(/'/g, "''"));
+    lines.forEach(line => {
+        const v = line.split(",").map(x => x.trim().replace(/'/g, "''"));
 
         db.run(`
-            INSERT INTO drivers (
-                ID, Name, Last_Name, Career_Points, Career_Wins,
-                Career_Championships, First_Team, Last_Team, Still_Racing
-            ) VALUES (
-                '${values[0]}','${values[1]}','${values[2]}','${values[3]}',
-                '${values[4]}','${values[5]}','${values[6]}','${values[7]}','${values[8]}'
+            INSERT INTO drivers VALUES (
+                '${v[0]}','${v[1]}','${v[2]}','${v[3]}','${v[4]}',
+                '${v[5]}','${v[6]}','${v[7]}','${v[8]}'
             );
         `);
     });
@@ -218,18 +227,20 @@ function exportCSV() {
     a.click();
 }
 
+// Import CSV
 document.getElementById("importCSV").onclick = () => {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".txt,.csv";
+    input.accept = ".csv,.txt";
 
     input.onchange = e => {
         const file = e.target.files[0];
         const reader = new FileReader();
 
         reader.onload = evt => {
+            db.run("DELETE FROM drivers;"); // optional reset
             insertCSV(evt.target.result);
-            alert("CSV Imported into SQL Database!");
+            alert("Imported!");
         };
 
         reader.readAsText(file);
@@ -238,13 +249,16 @@ document.getElementById("importCSV").onclick = () => {
     input.click();
 };
 
+// Add Driver
 document.getElementById("AddDriver").onclick = () => {
     const fields = [
         "ID","Name","Last_Name","Career_Points","Career_Wins",
         "Career_Championships","First_Team","Last_Team","Still_Racing"
     ];
 
-    const vals = fields.map(id => document.getElementById(id).value.trim().replace(/'/g,"''"));
+    const vals = fields.map(id => 
+        document.getElementById(id).value.trim().replace(/'/g, "''")
+    );
 
     db.run(`
         INSERT INTO drivers VALUES (
@@ -256,14 +270,15 @@ document.getElementById("AddDriver").onclick = () => {
     alert("Driver Added!");
 };
 
-
+// Clear DB
 document.getElementById("clearDB").onclick = () => {
     db.run("DELETE FROM drivers;");
     alert("Database Cleared!");
 };
-document.getElementById("exportCSV").onclick = () => {
-    exportCSV();
-};
+
+document.getElementById("exportCSV").onclick = exportCSV;
+
+// Run SQL
 document.getElementById("RunSQL").onclick = () => {
     const query = document.getElementById("SQL_Search").value;
 
@@ -281,16 +296,22 @@ document.getElementById("RunSQL").onclick = () => {
         let txt = cols.join(" | ") + "\n";
         txt += "-".repeat(60) + "\n";
 
-        rows.forEach(r => {
-            txt += r.join(" | ") + "\n";
-        });
+        rows.forEach(r => txt += r.join(" | ") + "\n");
 
         document.getElementById("Results").innerText = txt;
+
     } catch (err) {
         document.getElementById("Results").innerText = "Error: " + err;
     }
 };
-</script>
 
+// --- SQL BUTTONS ---
+document.querySelectorAll(".sqlBtn").forEach(btn => {
+    btn.onclick = () => {
+        document.getElementById("SQL_Search").value = btn.dataset.sql;
+    };
+});
+
+</script>
 </body>
 </html>
