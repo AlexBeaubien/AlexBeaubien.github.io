@@ -6,13 +6,13 @@
     <title>100 F1 Drivers</title>
     <link rel="stylesheet" href="SQL.css">
 </head>
-<!DOCTYPE html>
-<html>
 <body>
+
 <div class="heading">
     <img src="imgs/F1LogoWhite.png" alt="F1 Logo" class="F1LogoWhite">
     <h1>100 F1 Drivers</h1>
 </div>
+
 <br>
 
 <h2>Add Your Own Driver:</h2>
@@ -33,15 +33,28 @@
 <button id="clearDB">Clear Database</button>
 <button id="importCSV">Import File</button>
 <button id="exportCSV">Export File</button>
-<br>
+
+<br><br>
+
+<h3>Quick SQL Buttons:</h3>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers;">Show all drivers</button>
+<button class="sqlBtn" data-sql="SELECT ID, Name, Last_Name, Still_Racing FROM drivers WHERE Still_Racing = 'Yes';">Current active drivers</button>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers ORDER BY Career_Points DESC LIMIT 10;">Top 10 by career points</button>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers WHERE Career_Championships > 0;">World champions</button>
+<button class="sqlBtn" data-sql="SELECT * FROM drivers WHERE Career_Wins > 50;">Drivers with 50+ wins</button>
+<button class="sqlBtn" data-sql="SELECT ID, Last_Name, Name, Career_Points, Career_Wins, Career_Championships, First_Team, Last_Team, Still_Racing FROM drivers ORDER BY Last_Name ASC;">Sort by last name</button>
+<button class="sqlBtn" data-sql="SELECT ID, Name, Last_Name, First_Team FROM drivers;">List of first teams</button>
+<button class="sqlBtn" data-sql="SELECT COUNT(*) AS Total_Drivers FROM drivers;">Count all drivers</button>
+<button class="sqlBtn" data-sql="SELECT AVG(Career_Wins) AS Average_Wins FROM drivers;">Average Career Wins</button>
+<button class="sqlBtn" data-sql="SELECT First_Team, COUNT(*) AS Driver_Count FROM drivers GROUP BY First_Team ORDER BY Driver_Count DESC;">Number of drivers per first team</button>
+
+<br><br>
 
 <input type="text" id="SQL_Search" placeholder="Input SQL Query" class="SQLinput">
 <br>
 <button class="RunSQL" id="RunSQL">Run Query</button>
 
-<div class="ResultsBox">
-    <p class="Results" id="Results"></p>
-</div>
+<div class= "ResultsBox" id="driverTable"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
 
@@ -49,13 +62,17 @@
 
 let db;
 
-initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/${file}` })
+/* ----------------------- INIT ----------------------- */
+
+initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/${f}` })
 .then(SQL => {
     db = new SQL.Database();
     createTable();
     loadInitialDrivers();
+    renderTable("SELECT * FROM drivers;");
 });
 
+/* ----------------------- SQL TABLE CREATION ----------------------- */
 
 function createTable() {
     db.run(`
@@ -72,7 +89,6 @@ function createTable() {
         );
     `);
 }
-
 
 function loadInitialDrivers() {
     const csv = `ID,Name,Last_Name,Career_Points,Career_Wins,Career_Championships,First_Team,Last/CurrentTeam,Still_Racing
@@ -176,28 +192,55 @@ function loadInitialDrivers() {
 98,Robert,Schwartzman,10,0,0,Prema,Ferrari,No
 99,Cameron,Das,8,0,0,Carlin,McLaren,No
 100,Logan,Sargeant,55,0,0,Charouz,Williams,Yes`;
-
     insertCSV(csv);
 }
 
 function insertCSV(csv) {
-    const rows = csv.trim().split("\n");
-    const headers = rows.shift().split(",");
+    const lines = csv.trim().split("\n");
+    lines.shift();
 
-    rows.forEach(row => {
-        const values = row.split(",").map(v => v.trim().replace(/'/g, "''"));
+    lines.forEach(line => {
+        const v = line.split(",").map(x => x.trim().replace(/'/g, "''"));
 
         db.run(`
-            INSERT INTO drivers (
-                ID, Name, Last_Name, Career_Points, Career_Wins,
-                Career_Championships, First_Team, Last_Team, Still_Racing
-            ) VALUES (
-                '${values[0]}','${values[1]}','${values[2]}','${values[3]}',
-                '${values[4]}','${values[5]}','${values[6]}','${values[7]}','${values[8]}'
+            INSERT INTO drivers VALUES (
+                '${v[0]}','${v[1]}','${v[2]}','${v[3]}','${v[4]}',
+                '${v[5]}','${v[6]}','${v[7]}','${v[8]}'
             );
         `);
     });
 }
+
+/* ----------------------- HTML TABLE RENDERING ----------------------- */
+
+function renderTable(query) {
+    const result = db.exec(query);
+
+    if (result.length === 0) {
+        document.getElementById("driverTable").innerHTML = "<p>No results.</p>";
+        return;
+    }
+
+    const cols = result[0].columns;
+    const rows = result[0].values;
+
+    let html = "<table border='1' cellpadding='6'><tr>";
+
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += "</tr>";
+
+    rows.forEach(row => {
+        html += "<tr>";
+        row.forEach(cell => html += `<td>${cell}</td>`);
+        html += "</tr>";
+    });
+
+    html += "</table>";
+
+    document.getElementById("driverTable").innerHTML = html;
+}
+
+/* ----------------------- EXPORT CSV ----------------------- */
 
 function exportCSV() {
     const result = db.exec("SELECT * FROM drivers");
@@ -218,18 +261,24 @@ function exportCSV() {
     a.click();
 }
 
+document.getElementById("exportCSV").onclick = exportCSV;
+
+/* ----------------------- IMPORT CSV ----------------------- */
+
 document.getElementById("importCSV").onclick = () => {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".txt,.csv";
+    input.accept = ".csv,.txt";
 
     input.onchange = e => {
         const file = e.target.files[0];
         const reader = new FileReader();
 
         reader.onload = evt => {
+            db.run("DELETE FROM drivers;");
             insertCSV(evt.target.result);
-            alert("CSV Imported into SQL Database!");
+            renderTable("SELECT * FROM drivers;");
+            alert("Imported!");
         };
 
         reader.readAsText(file);
@@ -238,13 +287,17 @@ document.getElementById("importCSV").onclick = () => {
     input.click();
 };
 
+/* ----------------------- ADD DRIVER ----------------------- */
+
 document.getElementById("AddDriver").onclick = () => {
     const fields = [
         "ID","Name","Last_Name","Career_Points","Career_Wins",
         "Career_Championships","First_Team","Last_Team","Still_Racing"
     ];
 
-    const vals = fields.map(id => document.getElementById(id).value.trim().replace(/'/g,"''"));
+    const vals = fields.map(id => 
+        document.getElementById(id).value.trim().replace(/'/g, "''")
+    );
 
     db.run(`
         INSERT INTO drivers VALUES (
@@ -253,44 +306,38 @@ document.getElementById("AddDriver").onclick = () => {
         );
     `);
 
-    alert("Driver Added!");
+    renderTable("SELECT * FROM drivers;");
 };
 
+/* ----------------------- CLEAR DB ----------------------- */
 
 document.getElementById("clearDB").onclick = () => {
     db.run("DELETE FROM drivers;");
+    renderTable("SELECT * FROM drivers;");
     alert("Database Cleared!");
 };
-document.getElementById("exportCSV").onclick = () => {
-    exportCSV();
-};
+
+/* ----------------------- RUN SQL ----------------------- */
+
 document.getElementById("RunSQL").onclick = () => {
-    const query = document.getElementById("SQL_Search").value;
-
+    const q = document.getElementById("SQL_Search").value;
     try {
-        const result = db.exec(query);
-
-        if (result.length === 0) {
-            document.getElementById("Results").innerText = "No results.";
-            return;
-        }
-
-        const cols = result[0].columns;
-        const rows = result[0].values;
-
-        let txt = cols.join(" | ") + "\n";
-        txt += "-".repeat(60) + "\n";
-
-        rows.forEach(r => {
-            txt += r.join(" | ") + "\n";
-        });
-
-        document.getElementById("Results").innerText = txt;
+        renderTable(q);
     } catch (err) {
-        document.getElementById("Results").innerText = "Error: " + err;
+        document.getElementById("driverTable").innerHTML = "Error: " + err;
     }
 };
-</script>
 
+/* ----------------------- QUICK SQL BUTTONS ----------------------- */
+
+document.querySelectorAll(".sqlBtn").forEach(btn => {
+    btn.onclick = () => {
+        const q = btn.dataset.sql;
+        document.getElementById("SQL_Search").value = q;
+        renderTable(q);
+    };
+});
+
+</script>
 </body>
 </html>
