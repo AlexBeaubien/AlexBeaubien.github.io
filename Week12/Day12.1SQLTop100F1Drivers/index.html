@@ -38,7 +38,6 @@
 
 <h3>Quick SQL Buttons:</h3>
 <button class="sqlBtn" data-sql="SELECT * FROM drivers;">Show all drivers</button>
-<<<<<<< HEAD
 <button class="sqlBtn" data-sql="SELECT ID, Name, Last_Name, Still_Racing FROM drivers WHERE Still_Racing = 'Yes';">Current active drivers</button>
 <button class="sqlBtn" data-sql="SELECT * FROM drivers ORDER BY Career_Points DESC LIMIT 10;">Top 10 by career points</button>
 <button class="sqlBtn" data-sql="SELECT * FROM drivers WHERE Career_Championships > 0;">World champions</button>
@@ -48,15 +47,6 @@
 <button class="sqlBtn" data-sql="SELECT COUNT(*) AS Total_Drivers FROM drivers;">Count all drivers</button>
 <button class="sqlBtn" data-sql="SELECT AVG(Career_Wins) AS Average_Wins FROM drivers;">Average Career Wins</button>
 <button class="sqlBtn" data-sql="SELECT First_Team, COUNT(*) AS Driver_Count FROM drivers GROUP BY First_Team ORDER BY Driver_Count DESC;">Number of drivers per first team</button>
-=======
-<button class="sqlBtn" data-sql="SELECT * FROM drivers WHERE Still_Racing = 'Yes';">Current active drivers</button>
-<button class="sqlBtn" data-sql="SELECT * FROM drivers ORDER BY Career_Points DESC LIMIT 10;">Top 10 by career points</button>
-<button class="sqlBtn" data-sql="SELECT * FROM drivers WHERE Career_Championships > 0;">World champions</button>
-<button class="sqlBtn" data-sql="SELECT * FROM drivers WHERE Career_Wins > 10;">Drivers with 10+ wins</button>
-<button class="sqlBtn" data-sql="SELECT * FROM drivers ORDER BY Last_Name ASC;">Sort by last name</button>
-<button class="sqlBtn" data-sql="SELECT Name, First_Team FROM drivers;">List of first teams</button>
-<button class="sqlBtn" data-sql="SELECT COUNT(*) AS Total_Drivers FROM drivers;">Count all drivers</button>
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
 
 <br><br>
 
@@ -72,12 +62,8 @@
 
 let db;
 
-<<<<<<< HEAD
 /* ----------------------- INIT ----------------------- */
 
-=======
-// Initialize SQL.js
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
 initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/${f}` })
 .then(SQL => {
     db = new SQL.Database();
@@ -211,11 +197,7 @@ function loadInitialDrivers() {
 
 function insertCSV(csv) {
     const lines = csv.trim().split("\n");
-<<<<<<< HEAD
     lines.shift();
-=======
-    lines.shift(); // remove header
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
 
     lines.forEach(line => {
         const v = line.split(",").map(x => x.trim().replace(/'/g, "''"));
@@ -279,14 +261,10 @@ function exportCSV() {
     a.click();
 }
 
-<<<<<<< HEAD
 document.getElementById("exportCSV").onclick = exportCSV;
 
 /* ----------------------- IMPORT CSV ----------------------- */
 
-=======
-// Import CSV
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
 document.getElementById("importCSV").onclick = () => {
     const input = document.createElement("input");
     input.type = "file";
@@ -297,14 +275,9 @@ document.getElementById("importCSV").onclick = () => {
         const reader = new FileReader();
 
         reader.onload = evt => {
-<<<<<<< HEAD
             db.run("DELETE FROM drivers;");
             insertCSV(evt.target.result);
             renderTable("SELECT * FROM drivers;");
-=======
-            db.run("DELETE FROM drivers;"); // optional reset
-            insertCSV(evt.target.result);
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
             alert("Imported!");
         };
 
@@ -314,12 +287,8 @@ document.getElementById("importCSV").onclick = () => {
     input.click();
 };
 
-<<<<<<< HEAD
 /* ----------------------- ADD DRIVER ----------------------- */
 
-=======
-// Add Driver
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
 document.getElementById("AddDriver").onclick = () => {
     const fields = [
         "ID","Name","Last_Name","Career_Points","Career_Wins",
@@ -340,56 +309,25 @@ document.getElementById("AddDriver").onclick = () => {
     renderTable("SELECT * FROM drivers;");
 };
 
-<<<<<<< HEAD
 /* ----------------------- CLEAR DB ----------------------- */
 
-=======
-// Clear DB
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
 document.getElementById("clearDB").onclick = () => {
     db.run("DELETE FROM drivers;");
     renderTable("SELECT * FROM drivers;");
     alert("Database Cleared!");
 };
 
-<<<<<<< HEAD
 /* ----------------------- RUN SQL ----------------------- */
 
-=======
-document.getElementById("exportCSV").onclick = exportCSV;
-
-// Run SQL
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
 document.getElementById("RunSQL").onclick = () => {
     const q = document.getElementById("SQL_Search").value;
     try {
-<<<<<<< HEAD
         renderTable(q);
-=======
-        const result = db.exec(query);
-
-        if (result.length === 0) {
-            document.getElementById("Results").innerText = "No results.";
-            return;
-        }
-
-        const cols = result[0].columns;
-        const rows = result[0].values;
-
-        let txt = cols.join(" | ") + "\n";
-        txt += "-".repeat(60) + "\n";
-
-        rows.forEach(r => txt += r.join(" | ") + "\n");
-
-        document.getElementById("Results").innerText = txt;
-
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
     } catch (err) {
         document.getElementById("driverTable").innerHTML = "Error: " + err;
     }
 };
 
-<<<<<<< HEAD
 /* ----------------------- QUICK SQL BUTTONS ----------------------- */
 
 document.querySelectorAll(".sqlBtn").forEach(btn => {
@@ -397,12 +335,6 @@ document.querySelectorAll(".sqlBtn").forEach(btn => {
         const q = btn.dataset.sql;
         document.getElementById("SQL_Search").value = q;
         renderTable(q);
-=======
-// --- SQL BUTTONS ---
-document.querySelectorAll(".sqlBtn").forEach(btn => {
-    btn.onclick = () => {
-        document.getElementById("SQL_Search").value = btn.dataset.sql;
->>>>>>> 12c2a837a229504844a1f523de3813c0b82814f2
     };
 });
 
