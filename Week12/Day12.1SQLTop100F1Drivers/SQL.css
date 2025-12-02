@@ -72,22 +72,7 @@ button{
     cursor: pointer;
 }
 
-.sqlBtn2 {
-color: #ffffff;
-    background-color: #c00000;
-    width: 175px;
-    padding: 5px;
-    margin: 5px;
-    border: 1px solid #4d0000;
-    border-radius: 5px;
-    font-size: 1.275em;
-    cursor: pointer;
-}
-
 button:hover{
-    background-color: #ff0000;
-}
-.sqlBtn2:hover{
     background-color: #ff0000;
 }
 
