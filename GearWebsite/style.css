@@ -1,0 +1,58 @@
+body {
+    background: #1b1b1b;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+
+#workspace {
+    width: 900px;
+    height: 500px;
+    margin: auto;
+    border: 2px solid #555;
+    background: #262626;
+    position: relative;
+}
+
+#tray {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+    background: #111;
+}
+
+.tray-gear {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #4caf50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    font-weight: bold;
+}
+
+.gear {
+    position: absolute;
+    cursor: grab;
+}
+
+.motor {
+    outline: 3px solid orange;
+}
+
+.level-2 {
+    opacity: 0.65;
+    transform: translateY(-12px) scale(0.95);
+    pointer-events: auto;
+}
+
+
+#trash {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 40px;
+}
