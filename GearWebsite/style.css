@@ -34,6 +34,17 @@ body {
     font-weight: bold;
 }
 
+#custom-gear {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#custom-gear input {
+    width: 60px;
+    padding: 4px;
+}
+
 .gear {
     position: absolute;
     cursor: grab;
@@ -45,10 +56,34 @@ body {
 
 .level-2 {
     opacity: 0.65;
+    outline: 3px solid #000000;
     transform: translateY(-12px) scale(0.95);
     pointer-events: auto;
 }
 
+.gear-ui {
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    text-align: center;
+    pointer-events: auto;
+}
+
+.gear-ui button {
+    width: 22px;
+    height: 18px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.stats {
+    background: rgba(0,0,0,0.6);
+    padding: 2px 4px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+}
 
 #trash {
     position: absolute;

@@ -1,6 +1,9 @@
 const workspace = document.getElementById("workspace");
 const gears = [];
 const BASE_SPEED = 1.5;
+const BASE_RPM = 60;
+const BASE_TORQUE = 1;
+let topZ = 1;
 
 // ---------- SVG GEAR ----------
 function gearSVG(teeth, size) {
@@ -41,6 +44,7 @@ class Gear {
         this.level = 1;
         this.shaftParent = null;
         this.connected = [];
+        this.children = []; // ✅ FIX: initialize children array
 
         this.el = document.createElement("div");
         this.el.className = "gear";
@@ -50,7 +54,19 @@ class Gear {
         this.el.style.top = y + "px";
         this.el.style.width = this.size + "px";
         this.el.style.height = this.size + "px";
-        this.el.innerHTML = gearSVG(teeth, this.size);
+        this.el.innerHTML = `
+            ${gearSVG(teeth, this.size)}
+            <div class="gear-ui">
+                <div class="stats">
+                 <div class="rpm">RPM: 0</div>
+                    <div class="torque">TQ: 0</div>
+              </div>
+              <div class="level-controls">
+                 <button class="up">▲</button>
+                   <button class="down">▼</button>
+              </div>
+         </div>
+        `;
 
         workspace.appendChild(this.el);
         gears.push(this);
@@ -61,23 +77,27 @@ class Gear {
         let ox, oy;
 
         this.el.onmousedown = e => {
-            ox = e.offsetX;
-            oy = e.offsetY;
+    ox = e.offsetX;
+    oy = e.offsetY;
 
-            document.onmousemove = ev => {
-                this.el.style.left = ev.pageX - workspace.offsetLeft - ox + "px";
-                this.el.style.top  = ev.pageY - workspace.offsetTop - oy + "px";
-                checkStack(this);
-                checkConnections();
-            };
+    // ✅ Bring to front
+    this.el.style.zIndex = ++topZ;
 
-            document.onmouseup = () => {
-             document.onmousemove = null;
-             checkStack(this, true); // LOCK on drop
-             checkConnections();
-             checkTrash(this);
-            };
+        document.onmousemove = ev => {
+            this.el.style.left = ev.pageX - workspace.offsetLeft - ox + "px";
+            this.el.style.top  = ev.pageY - workspace.offsetTop - oy + "px";
+            snapToMesh(this);
+            checkStack(this);
+            checkConnections();
         };
+
+     document.onmouseup = () => {
+            document.onmousemove = null;
+            checkStack(this, true);
+            checkConnections();
+            checkTrash(this);
+        };
+    };
     }
 
     rotate() {
@@ -116,9 +136,9 @@ function checkStack(g, onDrop = false) {
 
                 // Snap to exact center
                 g.el.style.left =
-                    other.el.offsetLeft + "px";
+                    (other.center.x - g.radius) + "px";
                 g.el.style.top =
-                    other.el.offsetTop + "px";
+                    (other.center.y - g.radius) + "px";
 
                 g.el.classList.add("level-2");
                 return;
@@ -162,6 +182,33 @@ function checkConnections() {
     }
     propagate();
 }
+
+function snapToMesh(g) {
+    for (const other of gears) {
+        if (other === g) continue;
+        if (other.level !== g.level) continue;
+
+        const dx = g.center.x - other.center.x;
+        const dy = g.center.y - other.center.y;
+        const dist = Math.hypot(dx, dy);
+
+        const target = g.radius + other.radius;
+        const snapRange = 12;
+
+        if (Math.abs(dist - target) < snapRange) {
+            const angle = Math.atan2(dy, dx);
+
+            const nx = other.center.x + Math.cos(angle) * target;
+            const ny = other.center.y + Math.sin(angle) * target;
+
+            g.el.style.left = (nx - g.radius) + "px";
+            g.el.style.top  = (ny - g.radius) + "px";
+
+            return;
+        }
+    }
+}
+
 
 // ---------- ROTATION ----------
 function propagate() {
@@ -222,6 +269,14 @@ document.querySelectorAll(".tray-gear").forEach(t => {
         new Gear(+t.dataset.teeth, 300, 200);
     };
 });
+
+document.getElementById("addCustomGear").onclick = () => {
+    const teeth = parseInt(document.getElementById("customTeeth").value);
+
+    if (isNaN(teeth) || teeth < 3) return;
+
+    new Gear(teeth, 300, 200);
+};
 
 // ---------- MOTOR ----------
 new Gear(8, 200, 200, true);
