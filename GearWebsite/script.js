@@ -28,7 +28,7 @@ function gearSVG(teeth, size) {
     d += "Z";
 
     return `<svg width="${size}" height="${size}">
-        <path d="${d}" fill="#4caf50"/>
+        <path d="${d}" fill="#7e7e7eff"/>
         <circle cx="${r}" cy="${r}" r="${r*0.35}" fill="#1b1b1b"/>
     </svg>`;
 }
