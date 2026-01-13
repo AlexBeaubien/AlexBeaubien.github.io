@@ -91,3 +91,20 @@ body {
     bottom: 10px;
     font-size: 40px;
 }
+
+.gear-rotator {
+    width: 100%;
+    height: 100%;
+}
+
+.gear-ui {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+}
+
+.level-controls {
+    margin-top: 4px;
+}
