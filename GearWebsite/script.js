@@ -1,6 +1,7 @@
 const workspace = document.getElementById("workspace");
 const gears = [];
 
+const MESH_OVERLAP = 8;
 const BASE_RPM = 60;
 const BASE_TORQUE = 1;
 const BASE_SPEED = 360 * (BASE_RPM / 60); // deg/sec
@@ -26,7 +27,7 @@ function gearSVG(teeth, size) {
 
     return `
     <svg width="${size}" height="${size}">
-        <path d="${d}" fill="#7e7e7eff"/>
+        <path d="${d}" class="gear-body"/>
         <circle cx="${r}" cy="${r}" r="${r * 0.35}" fill="#1b1b1b"/>
     </svg>`;
 }
@@ -94,7 +95,7 @@ class Gear {
     let ox, oy;
 
     this.el.onmousedown = e => {
-        if (e.target.closest(".gear-ui")) return;
+        if (e.target.closest("button")) return;
 
         // If clicking a level-2 gear, drag its parent instead
         const dragGear = this.level === 2 ? this.shaftParent : this;
@@ -152,6 +153,37 @@ class Gear {
         this.el.querySelector(".torque").textContent =
             "TQ: " + this.torque.toFixed(2);
     }
+}
+
+function updateMotorGear(teeth) {
+    const g = motorGear;
+
+    // Prevent invalid changes
+    if (teeth < 3) return;
+
+    // Save center position
+    const cx = g.center.x;
+    const cy = g.center.y;
+
+    // Update properties
+    g.teeth = teeth;
+    g.size = teeth * 14;
+    g.radius = g.size / 2;
+
+    // Resize element
+    g.el.style.width = g.size + "px";
+    g.el.style.height = g.size + "px";
+
+    // Recenter
+    g.el.style.left = cx - g.radius + "px";
+    g.el.style.top  = cy - g.radius + "px";
+
+    // Regenerate SVG
+    g.el.querySelector(".gear-rotator").innerHTML =
+        gearSVG(teeth, g.size);
+
+    checkConnections();
+    propagate();
 }
 
 // ---------- STACKING ----------
@@ -237,7 +269,8 @@ function checkConnections() {
                 a.center.y - b.center.y
             );
 
-            if (Math.abs(d - (a.radius + b.radius)) < 6) {
+            const target = a.radius + b.radius - MESH_OVERLAP;
+            if (Math.abs(d - target) < 6) {
                 a.connected.push(b);
                 b.connected.push(a);
             }
@@ -254,7 +287,7 @@ function snapToMesh(g) {
         const dx = g.center.x - o.center.x;
         const dy = g.center.y - o.center.y;
         const d = Math.hypot(dx, dy);
-        const target = g.radius + o.radius;
+        const target = g.radius + o.radius - MESH_OVERLAP;
 
         if (Math.abs(d - target) < 10) {
             const a = Math.atan2(dy, dx);
@@ -369,7 +402,29 @@ document.getElementById("addCustomGear").onclick = () => {
 };
 
 // ---------- MOTOR ----------
-new Gear(8, 200, 200, true);
+const motorGear = new Gear(8, 200, 200, true);
+
+document.getElementById("setMotorTeeth").onclick = () => {
+    const t = +MotorTeeth.value;
+    updateMotorGear(t);
+};
+
+document.getElementById("setMotorRPM").onclick = () => {
+    const rpm = +MotorRPM.value;
+
+    motorGear.rpm = rpm;
+    motorGear.speed = rpm * 360 / 60;
+
+    propagate();
+};
+
+document.getElementById("setMotorTorque").onclick = () => {
+    const tq = +MotorTorque.value;
+
+    motorGear.torque = tq;
+
+    propagate();
+};
 
 // ---------- LOOP ----------
 let last = performance.now();

@@ -11,6 +11,14 @@
 <p>Drag gears from the tray. Stack gears to create gearboxes.</p>
 
 <div id="workspace">
+    <div>
+        <input type="number" id="MotorTeeth" min="3" max="61" value="8">
+        <button id="setMotorTeeth">Set Motor Gear Teeth</button>
+        <input type="number" id="MotorRPM" min="1" max="9999999999999999" value="60">
+        <button id="setMotorRPM">Set Motor RPM</button>
+        <input type="number" id="MotorTorque" min="1" max="9999999999999999" value="1">
+        <button id="setMotorTorque">Set Motor Torque</button>
+    </div>
     <div class="gear motor" data-teeth="8" style="left:200px; top:200px;"></div>
 
     <div id="trash">🗑</div>
@@ -22,7 +30,7 @@
     <div class="tray-gear" data-teeth="12">12T</div>
     
     <div id="custom-gear">
-        <input type="number" id="customTeeth" min="3" max="40" value="10">
+        <input type="number" id="customTeeth" min="3" max="61" value="10">
         <button id="addCustomGear">Add Gear</button>
     </div>
 </div>
