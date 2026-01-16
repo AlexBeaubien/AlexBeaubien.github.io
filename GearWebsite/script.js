@@ -426,6 +426,30 @@ document.getElementById("setMotorTorque").onclick = () => {
     propagate();
 };
 
+const motorAudio = document.getElementById("MotorHumm");
+
+let motorSoundStarted = false;
+
+function updateMotorSound() {
+    const MAX_RPM = 300;
+    const t = Math.min(1, motorGear.rpm / MAX_RPM);
+
+    // Start sound once (after user interaction)
+    if (!motorSoundStarted && motorGear.rpm > 0) {
+        motorAudio.loop = true;
+        motorAudio.volume = 0;
+        motorAudio.play().then(() => {
+            motorSoundStarted = true;
+        }).catch(() => {});
+    }
+
+    if (!motorSoundStarted) return;
+
+    // Smooth volume + pitch control
+    motorAudio.volume = Math.min(1, motorGear.rpm / MAX_RPM);
+    motorAudio.playbackRate = 0.7 + t * 0.9;
+}
+
 // ---------- LOOP ----------
 let last = performance.now();
 function animate(now) {
@@ -433,6 +457,7 @@ function animate(now) {
     last = now;
 
     enforceShaftAlignment();
+    updateMotorSound();
 
     gears.forEach(g => g.rotate(dt));
     requestAnimationFrame(animate);

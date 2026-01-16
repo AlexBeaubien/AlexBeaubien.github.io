@@ -5,8 +5,33 @@ body {
     text-align: center;
 }
 
+input{
+    background-color: rgb(173, 173, 173);
+    outline: 3px solid #000000;
+    color: white;
+    font-family: Arial;
+    font-size: 1.1em;
+    user-select: none;
+}
+
+button{
+    background-color: #7e7e7eff;
+    outline: 3px solid #000000;
+    color: white;
+    font-family: Arial;
+    font-size: 1.1em;
+    user-select: none;
+}
+
+button:hover{
+    background-color: rgb(202, 202, 202);
+    cursor: pointer;
+}
+
+
 #workspace {
     height: 750px;
+    width: 85%;
     margin: auto;
     border: 2px solid #555;
     background: #262626;
@@ -99,7 +124,7 @@ body {
     position: absolute;
     right: 10px;
     bottom: 10px;
-    font-size: 40px;
+    font-size: 80px;
     user-select: none;
 }
 
