@@ -7,6 +7,11 @@ const BASE_TORQUE = 1;
 const BASE_SPEED = 360 * (BASE_RPM / 60); // deg/sec
 let topZ = 1;
 
+
+function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+}
+
 // ---------- SVG ----------
 function gearSVG(teeth, size) {
     const r = size / 2;
@@ -156,29 +161,28 @@ class Gear {
 }
 
 function updateMotorGear(teeth) {
-    const g = motorGear;
+    const MIN_TEETH = 3;
+    const MAX_TEETH = 61;
 
-    // Prevent invalid changes
-    if (teeth < 3) return;
+    teeth = clamp(teeth, MIN_TEETH, MAX_TEETH);
+    MotorTeeth.value = teeth;
+
+    const g = motorGear;
 
     // Save center position
     const cx = g.center.x;
     const cy = g.center.y;
 
-    // Update properties
     g.teeth = teeth;
     g.size = teeth * 14;
     g.radius = g.size / 2;
 
-    // Resize element
     g.el.style.width = g.size + "px";
     g.el.style.height = g.size + "px";
 
-    // Recenter
     g.el.style.left = cx - g.radius + "px";
     g.el.style.top  = cy - g.radius + "px";
 
-    // Regenerate SVG
     g.el.querySelector(".gear-rotator").innerHTML =
         gearSVG(teeth, g.size);
 
@@ -397,8 +401,13 @@ document.querySelectorAll(".tray-gear").forEach(t => {
 });
 
 document.getElementById("addCustomGear").onclick = () => {
-    const t = +customTeeth.value;
-    if (t >= 3) new Gear(t, 300, 200);
+    const min = 3;
+    const max = 61;
+
+    let t = clamp(+customTeeth.value, min, max);
+    customTeeth.value = t; // snap UI to limit
+
+    new Gear(t, 300, 200);
 };
 
 // ---------- MOTOR ----------
@@ -410,7 +419,11 @@ document.getElementById("setMotorTeeth").onclick = () => {
 };
 
 document.getElementById("setMotorRPM").onclick = () => {
-    const rpm = +MotorRPM.value;
+    const MIN_RPM = 1;
+    const MAX_RPM = 100000;
+
+    let rpm = clamp(+MotorRPM.value, MIN_RPM, MAX_RPM);
+    MotorRPM.value = rpm;
 
     motorGear.rpm = rpm;
     motorGear.speed = rpm * 360 / 60;
@@ -419,7 +432,11 @@ document.getElementById("setMotorRPM").onclick = () => {
 };
 
 document.getElementById("setMotorTorque").onclick = () => {
-    const tq = +MotorTorque.value;
+    const MIN_TQ = 1;
+    const MAX_TQ = 100000;
+
+    let tq = clamp(+MotorTorque.value, MIN_TQ, MAX_TQ);
+    MotorTorque.value = tq;
 
     motorGear.torque = tq;
 
